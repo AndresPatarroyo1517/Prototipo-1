@@ -23,7 +23,7 @@ function start() {
     crearCompetidor();
     var elementos = document.querySelectorAll(".circulo");
     elementos.forEach(function (elemento) {
-      elemento.style.animation = `move ${100 / elemento.dataset.velocidad}s linear infinite`;
+      elemento.style.animation = `move ${100 / elemento.dataset.velocidad}s linear`;
       document.querySelectorAll('.circulo').forEach(circulo => {
         circulo.addEventListener('animationiteration', () => {
           circulo.remove();
@@ -37,9 +37,13 @@ function stop() {
   clearInterval(intervalo);
   var elementos = document.querySelectorAll(".circulo");
   elementos.forEach(elemento => {
+    var computedStyle = window.getComputedStyle(elemento);
+    var left = computedStyle.getPropertyValue("left");
+    elemento.style.left = left;
     elemento.style.animation = "none"; 
   });
 }
+
 
 document.addEventListener("keyup", function (evt) {
   if (evt.key === "a") {
