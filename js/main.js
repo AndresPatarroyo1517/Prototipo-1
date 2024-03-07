@@ -1,21 +1,52 @@
-var circles = document.querySelectorAll(".circle"); // Accedemos a todos los círculos
-var speeds = []; // Array para almacenar las velocidades aleatorias
+var contenido = document.querySelector(".cuerda")
+var colores = ["rojo", "verde", "azul", "amarillo"];
+let intervalo = "";
 
-// Generar velocidades aleatorias para cada círculo
-for (var i = 0; i < circles.length; i++) {
-  speeds.push(Math.random() * 0.3 + 0.2); // Velocidades entre 0.5 y 1.0
+function crearCirculo() {
+  var circulo = document.createElement('div');
+  circulo.setAttribute("class", "circulo");
+  var color = colores[Math.floor(Math.random() * colores.length)];
+  circulo.setAttribute("id", color);
+  return circulo;
 }
 
-function moveCircles() {
-  for (var i = 0; i < circles.length; i++) {
-    var position = parseFloat(circles[i].style.left || 0); // Obtenemos la posición actual
-    position += speeds[i]; // Incrementamos la posición según la velocidad del círculo
-    if (position >= 98) {
-      position = 0; // Reiniciamos la posición si llega al final
-    }
-    circles[i].style.left = position + "%"; // Movemos el círculo
+function crearCompetidor() {
+  var competidorDiv = crearCirculo();
+  competidorDiv.dataset.velocidad = Math.random() * 10;
+  var color = competidorDiv.id;
+  var contenedor = document.getElementById(color);
+  contenedor.appendChild(competidorDiv);
+}
+
+function start() {
+  intervalo = setInterval(function () {
+    crearCompetidor();
+    var elementos = document.querySelectorAll(".circulo");
+    elementos.forEach(function (elemento) {
+      elemento.style.animation = `move ${100 / elemento.dataset.velocidad}s linear infinite`;
+      document.querySelectorAll('.circulo').forEach(circulo => {
+        circulo.addEventListener('animationiteration', () => {
+          circulo.remove();
+        });
+      });
+    });
+  }, 1000);
+}
+
+function stop() {
+  clearInterval(intervalo);
+  var elementos = document.querySelectorAll(".circulo");
+  elementos.forEach(elemento => {
+    elemento.style.animation = "none"; 
+  });
+}
+
+document.addEventListener("keyup", function (evt) {
+  if (evt.key === "a") {
+    start();
   }
-  requestAnimationFrame(moveCircles);
-}
+  if (evt.key === "s") {
+    stop();
+  }
+});
 
-moveCircles();

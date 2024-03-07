@@ -1,76 +1,127 @@
 .cuerpo {
-  background-image: url('/files/bg.jpg'); 
-  background-size: cover; 
+  background-image: url('/files/bg.jpg');
+  background-size: cover;
   min-height: 90vh;
   justify-content: center;
   align-items: center;
 }
-.row {
+
+.fila {
   display: flex;
-  justify-content: center; 
-  margin-bottom: 30px; 
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
-.square {
-  width: 3000px; 
-  height: 150px; 
-  border: 5px solid; 
+.cuerda {
+  width: 100%;
+  height: 150px;
+  border: 5px solid;
   position: relative;
-  border-radius: 8px; 
+  border-radius: 8px;
 }
 
-.line {
+.linea {
   position: absolute;
-  top: 50%; 
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); 
-  width: 100%; 
-  height: 3px; 
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 3px;
   background-color: black
 }
 
-#rojo.line{
+.final {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 90%;
+  transform: translate(0%, -50%);
+  background: white;
+}
+
+#rojo.linea {
   background-color: #FF1744;
 }
-#rojo.square{
+
+#rojo.cuerda {
   border-color: #FF1744;
 }
-#rojo.circle{
+
+#rojo.circulo {
   background-color: #FF1744;
 }
-#verde.line{
+
+#verde.linea {
   background-color: #388E3C;
 }
-#verde.square{
+
+#verde.cuerda {
   border-color: #388E3C;
 }
-#verde.circle{
+
+#verde.circulo {
   background-color: #388E3C;
 }
-#azul.line{
+
+#azul.linea {
   background-color: #536DFE;
 }
-#azul.square{
+
+#azul.cuerda {
   border-color: #536DFE;
 }
-#azul.circle{
+
+#azul.circulo {
   background-color: #536DFE;
 }
-#amarillo.line{
+
+#amarillo.linea {
   background-color: #FFFF8D;
 }
-#amarillo.square{
+
+#amarillo.cuerda {
   border-color: #FFFF8D;
 }
-#amarillo.circle{
-  background-color:  #FFFF8D;
+
+#amarillo.circulo {
+  background-color: #FFFF8D;
 }
-.circle {
+
+.circulo {
   width: 40px;
   height: 40px;
-  border-radius: 50%; 
+  border-radius: 50%;
   position: absolute;
-  top: 50%; 
-  left: 0; 
-  transform: translate(0%, -50%); 
+  top: 35%;
+  left: 0;
+}
+
+#btnAmarillo {
+  background-image: url("/files/YELLOW.png");
+  background-size: cover;
+}
+
+#btnRojo {
+  background-image: url("/files/RED.png");
+  background-size: cover;
+}
+
+#btnVerde {
+  background-image: url("/files/GREEN.png");
+  background-size: cover;
+}
+
+#btnAzul {
+  background-image: url("/files/BLUE.png");
+  background-size: cover;
+}
+@keyframes move {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: calc(100% - 40px); 
+  }
 }
