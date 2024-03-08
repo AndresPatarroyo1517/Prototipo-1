@@ -1,56 +1,126 @@
-var contenido = document.querySelector(".cuerda")
-var colores = ["rojo", "verde", "azul", "amarillo"];
+var contenido = document.querySelector(".cuerda");
+var botonIniciarJuego = document.getElementById("iniciar");
+var botonPausarJuego = document.getElementById("pausar");
+var botonContinuarJuego = document.getElementById("continuar");
+var botonReiniciarJuego = document.getElementById("reiniciar");
+var contadorJuego = document.getElementById("contador");
+var colores = ["Rojo", "Verde", "Azul", "Amarillo"];
 let intervalo = "";
+let juegoIniciado = false;
+let pausa = false;
+var cont = 0;
+
 
 function crearCirculo() {
-  var circulo = document.createElement('div');
-  circulo.setAttribute("class", "circulo");
-  var color = colores[Math.floor(Math.random() * colores.length)];
-  circulo.setAttribute("id", color);
-  return circulo;
+    var circulo = document.createElement('div');
+    circulo.setAttribute("class", "circulo");
+    var color = colores[Math.floor(Math.random() * colores.length)];
+    circulo.setAttribute("id", color.toLowerCase());
+    return circulo;
 }
 
 function crearCompetidor() {
-  var competidorDiv = crearCirculo();
-  competidorDiv.dataset.velocidad = Math.random() * 10;
-  var color = competidorDiv.id;
-  var contenedor = document.getElementById(color);
-  contenedor.appendChild(competidorDiv);
+    var competidorDiv = crearCirculo();
+    competidorDiv.dataset.velocidad = Math.random() * 10;
+    competidorDiv.style.left = '0px';
+    var color = competidorDiv.id;
+    var contenedor = document.getElementById(color);
+    contenedor.appendChild(competidorDiv);
 }
 
-function start() {
-  intervalo = setInterval(function () {
-    crearCompetidor();
-    var elementos = document.querySelectorAll(".circulo");
-    elementos.forEach(function (elemento) {
-      elemento.style.animation = `move ${100 / elemento.dataset.velocidad}s linear`;
-      document.querySelectorAll('.circulo').forEach(circulo => {
-        circulo.addEventListener('animationiteration', () => {
-          circulo.remove();
+function moverCirculos() {
+    if (!pausa) {
+        var competidores = document.querySelectorAll('.circulo');
+        competidores.forEach(function (competidor) {
+            var velocidad = parseFloat(competidor.dataset.velocidad);
+            var pos = parseFloat(competidor.style.left);
+            competidor.style.left = pos + velocidad + 'px';
+            if (pos + velocidad >= contenido.offsetWidth - 40) {
+                competidor.remove();
+            }
         });
-      });
-    });
-  }, 1000);
+    }
 }
 
-function stop() {
-  clearInterval(intervalo);
-  var elementos = document.querySelectorAll(".circulo");
-  elementos.forEach(elemento => {
-    var computedStyle = window.getComputedStyle(elemento);
-    var left = computedStyle.getPropertyValue("left");
-    elemento.style.left = left;
-    elemento.style.animation = "none"; 
-  });
+function reestablecer() {
+    var competidores = document.querySelectorAll('.circulo');
+    competidores.forEach(function (competidor) {
+        competidor.remove();
+    })
+    cont = 0;
+    actualizarContador();
 }
 
+function teclaPresionada(num) {
+    var circulos = document.querySelectorAll('.circulo');
+    var color = colores[num];
+    var final = document.querySelector('.final#btn' + color);
+    circulos.forEach(function (circulo) {
+        var circuloAct = circulo.getBoundingClientRect();
+        var finalAct = final.getBoundingClientRect();
+        if (
+            circuloAct.left < finalAct.right + 1 &&
+            circuloAct.right > finalAct.left - 1 &&
+            circuloAct.top < finalAct.bottom + 1 &&
+            circuloAct.bottom > finalAct.top - 1
+        ) {
+            circulo.style.animation = 'explotar 0.5s forwards';
+            circulo.addEventListener('animationend', function () {
+                circulo.remove();
+                cont++;
+                actualizarContador();
+            });
+        }
+    })
+}
 
-document.addEventListener("keyup", function (evt) {
-  if (evt.key === "a") {
-    start();
-  }
-  if (evt.key === "s") {
-    stop();
-  }
+function actualizarContador() {
+    contadorJuego.innerText = cont;
+}
+
+function juego() {
+    juegoIniciado = true;
+    setInterval(moverCirculos, 60);
+    setInterval(crearCompetidor, 2000);
+    setInterval(actualizarContador, 1);
+}
+
+function pausar() {
+    pausa = true;
+}
+function continuar() {
+    pausa = false;
+}
+document.addEventListener('keydown', function (event) {
+    if (event.key === '1' && !juegoIniciado) {
+        juego();
+    } else if (event.key === 'p') {
+        pausar();
+    } else if (event.key === 'c') {
+        continuar();
+    } else if (event.key === 'r') {
+        reestablecer();
+        pausar();
+    } else if (event.key === 'd') {
+        teclaPresionada(0);
+    } else if (event.key === 'f') {
+        teclaPresionada(1);
+    } else if (event.key === 'j') {
+        teclaPresionada(2);
+    } else if (event.key === 'k') {
+        teclaPresionada(3);
+    }
 });
-
+document.addEventListener("click", function(evento) {
+    if (evento.target == botonIniciarJuego) {
+       juego();
+    }else if (evento.target == botonPausarJuego) {
+        pausar();
+    }else if (evento.target == botonContinuarJuego) {
+        continuar();
+    }
+    else if (evento.target == botonReiniciarJuego) {
+        reestablecer();
+        pausar();
+    }
+});

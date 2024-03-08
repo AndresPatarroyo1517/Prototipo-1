@@ -38,7 +38,6 @@
   top: 50%;
   left: 90%;
   transform: translate(0%, -50%);
-  background: white;
 }
 
 #rojo.linea {
@@ -117,11 +116,54 @@
   background-image: url("/files/BLUE.png");
   background-size: cover;
 }
+
+:root {
+  --initial-position: 0;
+}
+
 @keyframes move {
   0% {
-    left: 0;
+    left: var(--initial-position);
   }
+
   100% {
-    left: calc(100% - 40px); 
+    left: calc(100% - 40px);
   }
+}
+
+@keyframes explotar {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+.boton {
+  width: 300px;
+  height: 100px;
+  margin: auto 0;
+}
+
+.contenedor {
+  text-align: center;
+}
+
+.puntuacion {
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center; /* Centrado vertical */
+  margin-top: 10px;
+  border: white 18px;
+}
+
+.puntuacion span {
+  text-align: center;
+  color: white;
+  font-size: 30px;
+  margin-right: 10px;
 }

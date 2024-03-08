@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Guitar Hero</title>
   <link rel="stylesheet" href="css/main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
 </head>
 
 <body class="cuerpo">
@@ -31,8 +36,20 @@
     <div class="fila">
       <div class="cuerda" id="amarillo">
         <div class="linea" id="amarillo"></div>
-        <div class="final" id="btnAmarillo" ></div>
+        <div class="final" id="btnAmarillo"></div>
       </div>
+    </div>
+  </div>
+  <div class="contenedor">
+    <button type="button" class="btn btn-outline-success boton" id="iniciar">Iniciar</button>
+    <button type="button" class="btn btn-outline-secondary boton" id="pausar">Pausar</button>
+    <button type="button" class="btn btn-outline-info boton" id="continuar">Continuar</button>
+    <button type="button" class="btn btn-outline-danger boton" id="reiniciar">Reiniciar</button>
+  </div>
+  <div class="contenedor">
+    <div class="puntuacion">
+      <span>Puntuación: </span>
+      <span id="contador">0</span>
     </div>
   </div>
   <script src="js/main.js"></script>
