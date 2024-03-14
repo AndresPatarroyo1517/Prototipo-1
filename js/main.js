@@ -5,7 +5,9 @@ var botonContinuarJuego = document.getElementById("continuar");
 var botonReiniciarJuego = document.getElementById("reiniciar");
 var contadorJuego = document.getElementById("contador");
 var colores = ["Rojo", "Verde", "Azul", "Amarillo"];
-let intervalo = "";
+let intervaloMover;
+let intervaloCrear;
+let intervaloContador;
 let juegoIniciado = false;
 let pausa = false;
 var cont = 0;
@@ -20,12 +22,14 @@ function crearCirculo() {
 }
 
 function crearCompetidor() {
-    var competidorDiv = crearCirculo();
-    competidorDiv.dataset.velocidad = Math.random() * 10;
-    competidorDiv.style.left = '0px';
-    var color = competidorDiv.id;
-    var contenedor = document.getElementById(color);
-    contenedor.appendChild(competidorDiv);
+    if (juegoIniciado && !pausa) {
+        var competidorDiv = crearCirculo();
+        competidorDiv.dataset.velocidad = Math.random() * 20;
+        competidorDiv.style.left = '0px';
+        var color = competidorDiv.id;
+        var contenedor = document.getElementById(color);
+        contenedor.appendChild(competidorDiv);
+    }
 }
 
 function moverCirculos() {
@@ -43,6 +47,11 @@ function moverCirculos() {
 }
 
 function reestablecer() {
+    pausa = true;
+    juegoIniciado = false;
+    clearInterval(intervaloMover);
+    clearInterval(intervaloCrear);
+    clearInterval(intervaloContador);
     var competidores = document.querySelectorAll('.circulo');
     competidores.forEach(function (competidor) {
         competidor.remove();
@@ -79,10 +88,14 @@ function actualizarContador() {
 }
 
 function juego() {
+    pausa = false;
     juegoIniciado = true;
-    setInterval(moverCirculos, 60);
-    setInterval(crearCompetidor, 2000);
-    setInterval(actualizarContador, 1);
+    clearInterval(intervaloMover);
+    clearInterval(intervaloCrear);
+    clearInterval(intervaloContador);
+    intervaloMover = setInterval(moverCirculos, 60);
+    intervaloCrear = setInterval(crearCompetidor, 2000);
+    intervaloContador = setInterval(actualizarContador, 1);
 }
 
 function pausar() {
@@ -100,7 +113,6 @@ document.addEventListener('keydown', function (event) {
         continuar();
     } else if (event.key === 'r') {
         reestablecer();
-        pausar();
     } else if (event.key === 'd') {
         teclaPresionada(0);
     } else if (event.key === 'f') {
@@ -111,16 +123,15 @@ document.addEventListener('keydown', function (event) {
         teclaPresionada(3);
     }
 });
-document.addEventListener("click", function(evento) {
-    if (evento.target == botonIniciarJuego) {
-       juego();
-    }else if (evento.target == botonPausarJuego) {
+document.addEventListener("click", function (evento) {
+    if (evento.target == botonIniciarJuego && !juegoIniciado) {
+        juego();
+    } else if (evento.target == botonPausarJuego) {
         pausar();
-    }else if (evento.target == botonContinuarJuego) {
+    } else if (evento.target == botonContinuarJuego) {
         continuar();
     }
     else if (evento.target == botonReiniciarJuego) {
         reestablecer();
-        pausar();
     }
 });
